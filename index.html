@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sardhana Panchkalyanak 2026</title>
+    <style>
+        body { font-family: 'Arial', sans-serif; text-align: center; background: #fff5e6; color: #800000; padding: 20px; }
+        .container { background: white; padding: 20px; border-radius: 15px; box-shadow: 0 0 20px rgba(0,0,0,0.1); max-width: 500px; margin: auto; }
+        canvas { width: 100%; border-radius: 10px; margin-top: 15px; display: none; }
+        input, button { width: 90%; padding: 12px; margin: 10px 0; border-radius: 8px; border: 1px solid #ffcc80; }
+        button { background: #ff9933; color: white; font-weight: bold; font-size: 16px; border: none; cursor: pointer; }
+        #downloadBtn { background: #28a745; display: none; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>🚩 Sardhana Panchkalyanak 🚩</h2>
+    <p><b>23 Feb - 1 March 2026</b><br>Acharya Shri Bharat Bhushan Ji Gurudev ka Sanidhy</p>
+    
+    <input type="file" id="imageInput" accept="image/*">
+    <input type="text" id="nameInput" placeholder="Apna Naam Likhein">
+    
+    <button onclick="generateFrame()">Mera Digital Card Banayein</button>
+    
+    <canvas id="resultCanvas" width="1080" height="1080"></canvas>
+    
+    <button id="downloadBtn" onclick="downloadImage()">Gallery Mein Save Karein</button>
+</div>
+
+<script>
+    function generateFrame() {
+        const canvas = document.getElementById('resultCanvas');
+        const ctx = canvas.getContext('2d');
+        const imgInput = document.getElementById('imageInput').files[0];
+        const name = document.getElementById('nameInput').value;
+
+        if (!imgInput || !name) {
+            alert("Bhai, photo aur naam dono zaroori hain!");
+            return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const userImg = new Image();
+            userImg.onload = function() {
+                // 1. Clear Canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // 2. User ki Photo (Niche)
+                ctx.drawImage(userImg, 0, 0, 1080, 1080);
+                
+                // 3. Frame Overlay (Aapka PNG frame yahan load hoga)
+                const frameImg = new Image();
+                frameImg.src = 'https://i.postimg.cc/rwLns2fF/p-(1).png'; // Yahan aapka design aayega
+                frameImg.onload = function() {
+                    ctx.drawImage(frameImg, 0, 0, 1080, 1080);
+                    
+                    // 4. Naam likhna
+                    ctx.fillStyle = "white";
+                    ctx.font = "bold 50px Arial";
+                    ctx.textAlign = "center";
+                    ctx.fillText(name, 540, 950); 
+                    
+                    canvas.style.display = "block";
+                    document.getElementById('downloadBtn').style.display = "block";
+                };
+            };
+            userImg.src = e.target.result;
+        }
+        reader.readAsDataURL(imgInput);
+    }
+
+    function downloadImage() {
+        const link = document.createElement('a');
+        link.download = 'Sardhana-Panchkalyanak-2026.png';
+        link.href = document.getElementById('resultCanvas').toDataURL();
+        link.click();
+    }
+</script>
+</body>
+</html>
